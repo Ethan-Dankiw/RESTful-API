@@ -1,5 +1,5 @@
 package socket.stream.output;
 
-public class GetOutputStreamTest {
+class GetOutputStreamTest {
 
 }
