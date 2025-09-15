@@ -21,6 +21,9 @@ class CreateClientSocketTest {
 	// Define the port values for client socket creation
 	private static final Integer VALID_PORT = 8080;
 	private static final Integer UNKNOWN_PORT = 8081;
+	private static final Integer ZERO_PORT = 0;
+	private static final Integer NEGATIVE_PORT = -1;
+	private static final Integer LARGE_PORT = 90000;
 
 	// Define the server socket to make the connection to
 	private ServerSocket server = null;
@@ -141,6 +144,39 @@ class CreateClientSocketTest {
 	void testValidHostUnknownPort() {
 		// Get the client socket
 		Optional<Socket> optSocket = ClientSocketUtils.createSocket(VALID_HOST, UNKNOWN_PORT);
+
+		// Check that the socket doesn't exist
+		Assertions.assertTrue(optSocket.isEmpty(), "Client socket should not exist but does");
+	}
+
+
+	// Test a valid host, and zero port
+	@Test
+	void testValidHostZeroPort() {
+		// Get the client socket
+		Optional<Socket> optSocket = ClientSocketUtils.createSocket(VALID_HOST, ZERO_PORT);
+
+		// Check that the socket doesn't exist
+		Assertions.assertTrue(optSocket.isEmpty(), "Client socket should not exist but does");
+	}
+
+
+	// Test a valid host, and negative port
+	@Test
+	void testValidHostNegativePort() {
+		// Get the client socket
+		Optional<Socket> optSocket = ClientSocketUtils.createSocket(VALID_HOST, NEGATIVE_PORT);
+
+		// Check that the socket doesn't exist
+		Assertions.assertTrue(optSocket.isEmpty(), "Client socket should not exist but does");
+	}
+
+
+	// Test a valid host, and large port
+	@Test
+	void testValidHostLargePort() {
+		// Get the client socket
+		Optional<Socket> optSocket = ClientSocketUtils.createSocket(VALID_HOST, LARGE_PORT);
 
 		// Check that the socket doesn't exist
 		Assertions.assertTrue(optSocket.isEmpty(), "Client socket should not exist but does");
