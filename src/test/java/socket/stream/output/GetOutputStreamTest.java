@@ -1,4 +1,4 @@
-package socket.stream;
+package socket.stream.output;
 
 public class GetOutputStreamTest {
 

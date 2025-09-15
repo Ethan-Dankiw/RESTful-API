@@ -1,4 +1,4 @@
-package socket.stream;
+package socket.stream.input;
 
 import java.io.IOException;
 import java.io.InputStream;

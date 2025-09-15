@@ -1,6 +1,7 @@
 package net.ethandankiw.socket;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Optional;
@@ -52,6 +53,12 @@ public class ClientSocketUtils {
 
 
 	public static boolean closeConnection(@NotNull Socket client) {
+		// If the socket is already closed
+		if (client.isClosed()) {
+			logger.error("Client socket already closed");
+			return true;
+		}
+
 		try {
 			// Attempt to close the client socket
 			client.close();

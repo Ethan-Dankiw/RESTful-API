@@ -1,7 +1,8 @@
-package socket.server;
+package socket.client;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
@@ -10,9 +11,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import net.ethandankiw.socket.ClientSocketUtils;
 import net.ethandankiw.socket.ServerSocketUtils;
 
-class CloseServerSocketTest {
+class CloseClientSocketTest {
+	// Define the host values for client socket creation
+	private static final String VALID_HOST = "localhost";
 
 	// Define the port values for server socket creation
 	private static final Integer VALID_PORT = 8080;
@@ -52,44 +56,74 @@ class CloseServerSocketTest {
 	// Test valid close
 	@Test
 	void testValidClose() {
+		// Get the client socket
+		Optional<Socket> optSocket = ClientSocketUtils.createSocket(VALID_HOST, VALID_PORT);
+
+		// Check that the socket exists
+		Assertions.assertTrue(optSocket.isPresent(), "Client socket should exist but doesn't");
+
+		// Get the client socket
+		Socket socket = optSocket.get();
+
+		// Check that the socket exists
+		Assertions.assertNotNull(socket, "Client socket should not be null but was");
+
+		// Verify that the client is connected
+		Assertions.assertTrue(socket.isConnected(), "Client should be connected");
+
 		// Attempt to close the connection
-		boolean success = ServerSocketUtils.closeConnection(server);
+		boolean closeSuccess = ClientSocketUtils.closeConnection(socket);
 
 		// Check if the connection was closed
-		Assertions.assertTrue(success, "Socket should have closed but didn't");
+		Assertions.assertTrue(closeSuccess, "Socket should have closed but didn't");
 	}
 
 
 	// Test duplicate close
 	@Test
 	void testDuplicateClose() {
+		// Get the client socket
+		Optional<Socket> optSocket = ClientSocketUtils.createSocket(VALID_HOST, VALID_PORT);
+
+		// Check that the socket exists
+		Assertions.assertTrue(optSocket.isPresent(), "Client socket should exist but doesn't");
+
+		// Get the client socket
+		Socket socket = optSocket.get();
+
+		// Check that the socket exists
+		Assertions.assertNotNull(socket, "Client socket should not be null but was");
+
+		// Verify that the client is connected
+		Assertions.assertTrue(socket.isConnected(), "Client should be connected");
+
 		// Attempt to close the connection
-		boolean success = ServerSocketUtils.closeConnection(server);
+		boolean closeSuccess = ClientSocketUtils.closeConnection(socket);
 
 		// Check if the connection was closed
-		Assertions.assertTrue(success, "Socket should have closed but didn't");
+		Assertions.assertTrue(closeSuccess, "Socket should have closed but didn't");
 
-		// Reattempt to close the connection
-		boolean dupeSuccess = ServerSocketUtils.closeConnection(server);
+		// Attempt to close the connection
+		boolean dupeCloseSuccess = ClientSocketUtils.closeConnection(socket);
 
 		// Check if the connection was closed
-		Assertions.assertTrue(dupeSuccess, "Socket should have closed but didn't");
+		Assertions.assertTrue(dupeCloseSuccess, "Socket should have closed but didn't");
 	}
 
 
 	// Test IO Exception
 	@Test
 	void testIOException() throws IOException {
-		// Clock the server socket class
-		ServerSocket mockServerSocket = Mockito.mock(ServerSocket.class);
+		// Clock the client socket class
+		Socket mockSocket = Mockito.mock(Socket.class);
 
 		// When the server socket is closed, throw a simulated IO exception
 		Mockito.doThrow(new IOException("Simulated I/O error"))
-			   .when(mockServerSocket)
+			   .when(mockSocket)
 			   .close();
 
 		// Attempt to close the mocked server socket
-		boolean success = ServerSocketUtils.closeConnection(mockServerSocket);
+		boolean success = ClientSocketUtils.closeConnection(mockSocket);
 
 		// Check that the close attempt failed
 		Assertions.assertFalse(success, "Close should have failed but didn't");

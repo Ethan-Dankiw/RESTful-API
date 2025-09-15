@@ -1,4 +1,4 @@
-package socket.stream;
+package socket.stream.input;
 
 public class ReadInputStreamTest {
 
