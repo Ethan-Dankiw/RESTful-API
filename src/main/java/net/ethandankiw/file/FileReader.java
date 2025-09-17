@@ -17,6 +17,7 @@ public class FileReader {
 
 	private Path directory;
 
+
 	public boolean setDirectory(@NotNull String directory) {
 		try {
 			// Locate the directory in the file system
@@ -44,6 +45,7 @@ public class FileReader {
 			return false;
 		}
 	}
+
 
 	public @Nullable File getFile(@NotNull String fileName) {
 		// Check if the directory exists

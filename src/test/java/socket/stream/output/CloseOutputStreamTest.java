@@ -31,6 +31,7 @@ class CloseOutputStreamTest {
 	// ServerSocket instance for tests
 	private ServerSocket server = null;
 
+
 	// Create the server before each test
 	@BeforeEach
 	void setup() {
@@ -44,6 +45,7 @@ class CloseOutputStreamTest {
 		server = optSocket.get();
 	}
 
+
 	// Close the server after each test
 	@AfterEach
 	void teardown() {
@@ -56,6 +58,7 @@ class CloseOutputStreamTest {
 		// Null out reference
 		server = null;
 	}
+
 
 	// Test closing an OutputStream obtained from the server-side accepted socket
 	@Test
@@ -109,6 +112,7 @@ class CloseOutputStreamTest {
 		Assertions.assertTrue(completed, "Close output stream operation should have completed.");
 	}
 
+
 	// Test closing an OutputStream on the client-side
 	@Test
 	void testClientSideCloseOutputStream() {
@@ -133,6 +137,7 @@ class CloseOutputStreamTest {
 		boolean socketClosed = ClientSocketUtils.closeConnection(socket);
 		Assertions.assertTrue(socketClosed, "Client socket should have closed but didn't");
 	}
+
 
 	// Test closing an already closed OutputStream — should return true (close() is idempotent)
 	@Test
@@ -159,6 +164,7 @@ class CloseOutputStreamTest {
 		Assertions.assertTrue(socketClosed, "Client socket should have closed but didn't");
 	}
 
+
 	// Test that attempting to get/close an OutputStream for a closed socket results in empty optional/cleanup
 	@Test
 	void testCloseOutputStreamForClosedSocket() throws Exception {
@@ -177,6 +183,7 @@ class CloseOutputStreamTest {
 		Assertions.assertTrue(optStream.isEmpty(), "Output stream should be empty for closed socket");
 	}
 
+
 	// Test that an IOException thrown by OutputStream.close() results in the utility returning false
 	@Test
 	void testIOExceptionOnClose() throws IOException {
@@ -184,7 +191,8 @@ class CloseOutputStreamTest {
 		OutputStream mockOut = mock(OutputStream.class);
 
 		// Configure the mock to throw on close()
-		doThrow(new IOException("fail")).when(mockOut).close();
+		doThrow(new IOException("fail")).when(mockOut)
+										.close();
 
 		// Attempt to close the mock via the utility — should return false due to the IOException
 		boolean closed = OutputStreamUtils.closeOutputStream(mockOut);

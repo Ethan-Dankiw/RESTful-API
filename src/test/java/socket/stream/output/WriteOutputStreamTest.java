@@ -36,6 +36,7 @@ class WriteOutputStreamTest {
 	// ServerSocket created before each test
 	private ServerSocket server = null;
 
+
 	// Bind the server before each test so clients can connect
 	@BeforeEach
 	void setup() {
@@ -49,6 +50,7 @@ class WriteOutputStreamTest {
 		server = optSocket.get();
 	}
 
+
 	// Close the server socket after every test
 	@AfterEach
 	void teardown() {
@@ -61,6 +63,7 @@ class WriteOutputStreamTest {
 		// Clear reference
 		server = null;
 	}
+
 
 	// Test writing to a server-side client's OutputStream (server writes)
 	@Test
@@ -91,8 +94,7 @@ class WriteOutputStreamTest {
 				int written = OutputStreamUtils.writeOutputStream(optStream.get(), TEST_STRING);
 
 				// Verify the number of bytes written equals the UTF-8 length of the string
-				Assertions.assertEquals(TEST_STRING.getBytes(StandardCharsets.UTF_8).length, written,
-						"Incorrect number of bytes written");
+				Assertions.assertEquals(TEST_STRING.getBytes(StandardCharsets.UTF_8).length, written, "Incorrect number of bytes written");
 			});
 
 			// Signal completion
@@ -122,6 +124,7 @@ class WriteOutputStreamTest {
 		boolean completed = latch.await(1000, TimeUnit.MILLISECONDS);
 		Assertions.assertTrue(completed, "Write operation should have completed.");
 	}
+
 
 	// Test writing from client-side OutputStream (client writes)
 	@Test
@@ -158,8 +161,7 @@ class WriteOutputStreamTest {
 			// Try writing using the utility and verify no exception
 			Assertions.assertDoesNotThrow(() -> {
 				int written = OutputStreamUtils.writeOutputStream(optStream.get(), TEST_STRING);
-				Assertions.assertEquals(TEST_STRING.getBytes(StandardCharsets.UTF_8).length, written,
-						"Incorrect number of bytes written");
+				Assertions.assertEquals(TEST_STRING.getBytes(StandardCharsets.UTF_8).length, written, "Incorrect number of bytes written");
 			});
 
 			// Close the client socket
@@ -175,6 +177,7 @@ class WriteOutputStreamTest {
 		boolean completed = latch.await(1000, TimeUnit.MILLISECONDS);
 		Assertions.assertTrue(completed, "Client write operation should have completed.");
 	}
+
 
 	// Test that writing a blank/whitespace-only string returns 0 and does not write bytes
 	@Test
@@ -201,6 +204,7 @@ class WriteOutputStreamTest {
 		Assertions.assertTrue(closed, "Client socket should have closed but didn't");
 	}
 
+
 	// Test writing to a stream that we simulate as "closed" by making write() throw IOException
 	@Test
 	void testWriteToClosedOutputStreamSimulatedWithIOException() throws IOException {
@@ -208,8 +212,8 @@ class WriteOutputStreamTest {
 		OutputStream mockOut = mock(OutputStream.class);
 
 		// When write(...) is invoked, simulate a "stream closed" IOException
-		doThrow(new IOException("stream closed")).when(mockOut).write(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.anyInt(),
-				org.mockito.ArgumentMatchers.anyInt());
+		doThrow(new IOException("stream closed")).when(mockOut)
+												 .write(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.anyInt(), org.mockito.ArgumentMatchers.anyInt());
 
 		// Call the utility; it should catch the IOException and return 0 bytes written
 		Assertions.assertDoesNotThrow(() -> {
@@ -217,6 +221,7 @@ class WriteOutputStreamTest {
 			Assertions.assertEquals(0, written, "IOException (simulated closed) should result in zero bytes written");
 		});
 	}
+
 
 	// Test the behavior when trying to obtain an OutputStream for a closed socket (no write)
 	@Test
@@ -236,6 +241,7 @@ class WriteOutputStreamTest {
 		Assertions.assertTrue(optStream.isEmpty(), "Output stream should be empty for closed socket");
 	}
 
+
 	// Test that a SocketTimeoutException thrown by the underlying OutputStream is rethrown
 	@Test
 	void testSocketTimeoutExceptionOnWrite() throws IOException {
@@ -243,14 +249,13 @@ class WriteOutputStreamTest {
 		OutputStream mockOut = mock(OutputStream.class);
 
 		// Simulate a timeout being thrown by the stream on write
-		doThrow(new SocketTimeoutException("timeout")).when(mockOut).write(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.anyInt(),
-				org.mockito.ArgumentMatchers.anyInt());
+		doThrow(new SocketTimeoutException("timeout")).when(mockOut)
+													  .write(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.anyInt(), org.mockito.ArgumentMatchers.anyInt());
 
 		// The utility is expected to rethrow SocketTimeoutException — assert it is thrown
-		Assertions.assertThrows(SocketTimeoutException.class,
-				() -> OutputStreamUtils.writeOutputStream(mockOut, TEST_STRING),
-				"SocketTimeoutException should be thrown");
+		Assertions.assertThrows(SocketTimeoutException.class, () -> OutputStreamUtils.writeOutputStream(mockOut, TEST_STRING), "SocketTimeoutException should be thrown");
 	}
+
 
 	// Test that a general IOException on write is swallowed by the utility and yields 0 bytes written
 	@Test
@@ -259,8 +264,8 @@ class WriteOutputStreamTest {
 		OutputStream mockOut = mock(OutputStream.class);
 
 		// Simulate an IOException during write
-		doThrow(new IOException("io fail")).when(mockOut).write(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.anyInt(),
-				org.mockito.ArgumentMatchers.anyInt());
+		doThrow(new IOException("io fail")).when(mockOut)
+										   .write(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.anyInt(), org.mockito.ArgumentMatchers.anyInt());
 
 		// The utility should handle the IOException and return 0 bytes written (no exception)
 		Assertions.assertDoesNotThrow(() -> {

@@ -1,7 +1,7 @@
 package socket.stream.output;
 
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -31,6 +31,7 @@ class GetOutputStreamTest {
 	// ServerSocket instance used by each test and created in @BeforeEach
 	private ServerSocket server = null;
 
+
 	// Create the server before each test so the port is bound and ready
 	@BeforeEach
 	void setup() {
@@ -44,6 +45,7 @@ class GetOutputStreamTest {
 		server = optSocket.get();
 	}
 
+
 	// Close and wipe the server after each test so ports free up for other tests
 	@AfterEach
 	void teardown() {
@@ -56,6 +58,7 @@ class GetOutputStreamTest {
 		// Clear the reference for safety
 		server = null;
 	}
+
 
 	// Test that the server-side accepted client socket can provide an OutputStream
 	@Test
@@ -127,6 +130,7 @@ class GetOutputStreamTest {
 		Assertions.assertTrue(completed, "Get output stream operation should have completed.");
 	}
 
+
 	// Test retrieving an OutputStream from the client-side socket (no server-side action required)
 	@Test
 	void testClientGetOutputStream() {
@@ -155,6 +159,7 @@ class GetOutputStreamTest {
 		Assertions.assertTrue(closed, "Client socket should have closed but didn't");
 	}
 
+
 	// Test that asking for an OutputStream on a closed socket returns an empty Optional
 	@Test
 	void testClosedSocketGetOutputStream() throws Exception {
@@ -177,6 +182,7 @@ class GetOutputStreamTest {
 		Assertions.assertTrue(optStream.isEmpty(), "Output stream should be empty for closed socket");
 	}
 
+
 	// Test that if socket.getOutputStream() throws an IOException the utility returns Optional.empty()
 	@Test
 	void testGetOutputStreamIOException() throws IOException {
@@ -192,6 +198,7 @@ class GetOutputStreamTest {
 		// Assert that the utility returned an empty Optional in this error case
 		Assertions.assertTrue(optStream.isEmpty(), "Output stream should be empty when getOutputStream throws IOException");
 	}
+
 
 	// Test retrieving an OutputStream, closing that stream, and ensuring close succeeds (closed output stream case)
 	@Test
