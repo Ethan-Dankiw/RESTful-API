@@ -7,6 +7,6 @@ import net.ethandankiw.parser.file.FileParser;
 
 public class HttpResponseParser {
 
-	private static final Logger logger = LoggerFactory.getLogger(FileParser.class);
+	private static final Logger logger = LoggerFactory.getLogger(HttpResponseParser.class);
 
 }
