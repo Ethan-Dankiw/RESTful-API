@@ -1,6 +1,5 @@
 package parser.file;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 
 import java.io.IOException;
@@ -72,7 +71,8 @@ class ParseFileLinesTest {
 		// Mock the Files class to simulate the conditions
 		try (MockedStatic<Files> mockedFiles = mockStatic(Files.class)) {
 			// When Files.isReadable is called, return false to avoid the other branch
-			mockedFiles.when(() -> Files.isReadable(directoryPath)).thenReturn(false);
+			mockedFiles.when(() -> Files.isReadable(directoryPath))
+					   .thenReturn(false);
 
 			// Call the public method that uses the private isFileUnreadable
 			List<String> result = FileParser.parseFileLines(directoryPath);
@@ -81,6 +81,7 @@ class ParseFileLinesTest {
 			Assertions.assertTrue(result.isEmpty(), "Directory should return an empty list");
 		}
 	}
+
 
 	// Test parsing lines from an unreadable file
 	@Test
@@ -91,10 +92,12 @@ class ParseFileLinesTest {
 		// Mock the Files class to simulate the conditions
 		try (MockedStatic<Files> mockedFiles = mockStatic(Files.class)) {
 			// When Files.isDirectory is called with the testPath, return true
-			mockedFiles.when(() -> Files.isDirectory(directoryPath)).thenReturn(false);
+			mockedFiles.when(() -> Files.isDirectory(directoryPath))
+					   .thenReturn(false);
 
 			// When Files.isReadable is called, return false to avoid the other branch
-			mockedFiles.when(() -> Files.isReadable(directoryPath)).thenReturn(false);
+			mockedFiles.when(() -> Files.isReadable(directoryPath))
+					   .thenReturn(false);
 
 			// Call the public method that uses the private isFileUnreadable
 			List<String> result = FileParser.parseFileLines(directoryPath);
