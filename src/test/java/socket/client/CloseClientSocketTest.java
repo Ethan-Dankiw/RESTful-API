@@ -15,6 +15,7 @@ import net.ethandankiw.socket.ClientSocketUtils;
 import net.ethandankiw.socket.ServerSocketUtils;
 
 class CloseClientSocketTest {
+
 	// Define the host values for client socket creation
 	private static final String VALID_HOST = "localhost";
 

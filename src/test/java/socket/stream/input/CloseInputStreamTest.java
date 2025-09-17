@@ -94,7 +94,6 @@ class CloseInputStreamTest {
 			boolean closeSuccess = InputStreamUtils.closeInputStream(stream);
 			Assertions.assertTrue(closeSuccess, "Stream should have closed successfully");
 
-
 			// Close the client socket
 			boolean clientSuccess = ClientSocketUtils.closeConnection(serverSideClientSocket);
 
@@ -137,7 +136,6 @@ class CloseInputStreamTest {
 
 		Assertions.assertFalse(serverThread.isAlive(), "Server thread should have finished");
 		Assertions.assertFalse(clientThread.isAlive(), "Client thread should have finished");
-
 
 		// Close the client socket
 		boolean clientSuccess = ClientSocketUtils.closeConnection(clientSocketRef.get());
@@ -216,7 +214,10 @@ class CloseInputStreamTest {
 		InputStream mockStream = Mockito.mock(InputStream.class);
 
 		// Mock the close() method to throw an IOException on a duplicate call
-		Mockito.doNothing().doThrow(new IOException("Simulated duplicate close error")).when(mockStream).close();
+		Mockito.doNothing()
+			   .doThrow(new IOException("Simulated duplicate close error"))
+			   .when(mockStream)
+			   .close();
 
 		// Attempt to close the stream for the first time
 		boolean firstCloseSuccess = InputStreamUtils.closeInputStream(mockStream);

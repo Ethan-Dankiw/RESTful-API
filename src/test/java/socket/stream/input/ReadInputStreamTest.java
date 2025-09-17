@@ -1,15 +1,12 @@
 package socket.stream.input;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -263,6 +260,8 @@ class ReadInputStreamTest {
 		// Assert that the test completed
 		Assertions.assertTrue(earlyFinish, "Read operation should have completed.");
 	}// Test that a server-side client socket can read data from a client
+
+
 	@Test
 	void testServerSideIOException() throws InterruptedException, IllegalArgumentException {
 		// Latch to synchronize the client and server threads
@@ -303,8 +302,8 @@ class ReadInputStreamTest {
 				byte[] bytes = InputStreamUtils.readInputStream(stream);
 
 				// Verify that only one byte was written
-				Assertions.assertEquals(0, bytes.length, "Zero bytes should be read from server-side client socket "
-						+ "input stream");
+				Assertions.assertEquals(0, bytes.length,
+						"Zero bytes should be read from server-side client socket " + "input stream");
 			});
 
 			// Count down the latch after the read attempt
