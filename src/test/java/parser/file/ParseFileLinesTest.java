@@ -57,8 +57,16 @@ class ParseFileLinesTest {
 		// Parse the file lines
 		List<String> result = FileParser.parseFileLines(readableFile);
 
+		// Replace characters to verify that strings are the same
+		List<String> expected = READABLE_CONTENTS.stream()
+												 .map(line -> line.replaceAll("\r\n", "\n"))
+												 .toList();
+		List<String> actual = result.stream()
+									.map(line -> line.replaceAll("\r\n", "\n"))
+									.toList();
+
 		// Verify the parsed lines
-		Assertions.assertEquals(READABLE_CONTENTS, result, "File lines should match expected content");
+		Assertions.assertEquals(expected, actual, "File lines should match expected content");
 	}
 
 

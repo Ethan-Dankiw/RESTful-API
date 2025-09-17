@@ -56,8 +56,15 @@ class ParseFileTest {
 		// Parse the file lines
 		String result = FileParser.parseFile(readableFile);
 
+		// File contents should not be null
+		Assertions.assertNotNull(result, "File lines should not be null");
+
+		// Replace characters to verify that strings are the same
+		String expected = READABLE_CONTENTS.replaceAll("\r\n", "\n");
+		String actual = result.replaceAll("\r\n", "\n");
+
 		// Verify the parsed lines
-		Assertions.assertEquals(READABLE_CONTENTS, result, "File lines should match expected content");
+		Assertions.assertEquals(expected, actual, "File lines should match expected content");
 	}
 
 
