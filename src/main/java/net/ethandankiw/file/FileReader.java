@@ -1,6 +1,5 @@
 package net.ethandankiw.file;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
@@ -47,7 +46,7 @@ public class FileReader {
 	}
 
 
-	public @Nullable File getFile(@NotNull String fileName) {
+	public @Nullable Path getFile(@NotNull String fileName) {
 		// Check if the directory exists
 		if (directory == null) {
 			logger.error("Unable to get file as parent directory has not be set");
@@ -69,6 +68,6 @@ public class FileReader {
 			return null;
 		}
 
-		return filePath.toFile();
+		return filePath;
 	}
 }

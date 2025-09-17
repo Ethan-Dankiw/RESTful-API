@@ -19,7 +19,7 @@ import net.ethandankiw.socket.ClientSocketUtils;
 import net.ethandankiw.socket.InputStreamUtils;
 import net.ethandankiw.socket.ServerSocketUtils;
 
-class AcceptClientSocketTest {
+class AcceptServerSideClientSocketTest {
 
 	// Define the host values for client socket creation
 	private static final String VALID_HOST = "localhost";
