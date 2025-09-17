@@ -1,5 +1,6 @@
 package parser.file;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 
 import java.io.IOException;
@@ -62,48 +63,70 @@ class ParseFileLinesTest {
 	}
 
 
-	// Test parsing lines from a non-readable file
+	// Test parsing lines from a directory
 	@Test
-	void testParseFileLinesNonReadable() {
-		// Get the path to a non-readable test file
-		Path unreadableDirectory = Paths.get(DIRECTORY);
+	void testParseFileLinesIsDirectory() {
+		// Get the path to a directory
+		Path directoryPath = Paths.get(DIRECTORY);
 
-		// Verify that the test file exists
-		Assertions.assertNotNull(unreadableDirectory, "Non-readable directory should not be null");
+		// Mock the Files class to simulate the conditions
+		try (MockedStatic<Files> mockedFiles = mockStatic(Files.class)) {
+			// When Files.isReadable is called, return false to avoid the other branch
+			mockedFiles.when(() -> Files.isReadable(directoryPath)).thenReturn(false);
 
-		// Parse the file lines
-		List<String> result = FileParser.parseFileLines(unreadableDirectory);
+			// Call the public method that uses the private isFileUnreadable
+			List<String> result = FileParser.parseFileLines(directoryPath);
 
-		// Verify that the result is an empty list
-		Assertions.assertTrue(result.isEmpty(), "Non-readable file should return empty list");
+			// Assert that the method returns an empty list
+			Assertions.assertTrue(result.isEmpty(), "Directory should return an empty list");
+		}
+	}
+
+	// Test parsing lines from an unreadable file
+	@Test
+	void testParseFileLinesIsUnreadableFile() {
+		// Get the path to a directory
+		Path directoryPath = Paths.get(DIRECTORY);
+
+		// Mock the Files class to simulate the conditions
+		try (MockedStatic<Files> mockedFiles = mockStatic(Files.class)) {
+			// When Files.isDirectory is called with the testPath, return true
+			mockedFiles.when(() -> Files.isDirectory(directoryPath)).thenReturn(false);
+
+			// When Files.isReadable is called, return false to avoid the other branch
+			mockedFiles.when(() -> Files.isReadable(directoryPath)).thenReturn(false);
+
+			// Call the public method that uses the private isFileUnreadable
+			List<String> result = FileParser.parseFileLines(directoryPath);
+
+			// Assert that the method returns an empty list
+			Assertions.assertTrue(result.isEmpty(), "Directory should return an empty list");
+		}
 	}
 
 
 	// Test parsing lines from a file that triggers IOException
 	@Test
 	void testParseFileLinesIOException() {
-		// Get the path to a readable test file
-		Path readableFile = reader.getFile(READABLE_PATH);
-
-		// Verify that the test file exists
-		Assertions.assertNotNull(readableFile, "Readable file should not be null");
+		// Get the path to a directory
+		Path directoryPath = Paths.get(DIRECTORY);
 
 		// Mock the files class so that an invalid file slips through file reader
 		MockedStatic<Files> mockedFiles = mockStatic(Files.class);
 
 		// When the files class is checked to see if its readable, return true even though it cannot
 		// This ensures an unreadable file has an invalid read attempt
-		mockedFiles.when(() -> Files.isReadable(readableFile))
+		mockedFiles.when(() -> Files.isReadable(directoryPath))
 				   .thenReturn(true);
-		mockedFiles.when(() -> Files.isDirectory(readableFile))
+		mockedFiles.when(() -> Files.isDirectory(directoryPath))
 				   .thenReturn(false);
 
 		// When the parser attempts to read all the lines from a file, throw a simulated IO Exception
-		mockedFiles.when(() -> Files.readAllLines(readableFile))
+		mockedFiles.when(() -> Files.readAllLines(directoryPath))
 				   .thenThrow(new IOException("Simulated IO Exception"));
 
 		// Parse the file into a list of files
-		List<String> result = FileParser.parseFileLines(readableFile);
+		List<String> result = FileParser.parseFileLines(directoryPath);
 
 		// Verify if the resulting parsed file has no contents
 		Assertions.assertTrue(result.isEmpty(), "IOException should return empty list");
