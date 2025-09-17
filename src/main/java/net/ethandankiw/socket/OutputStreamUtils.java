@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 public class OutputStreamUtils {
 
-	public static final Logger logger = LoggerFactory.getLogger(OutputStreamUtils.class);
+	private static final Logger logger = LoggerFactory.getLogger(OutputStreamUtils.class);
 
 
 	private OutputStreamUtils() {

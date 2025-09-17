@@ -14,7 +14,7 @@ import net.ethandankiw.utils.TimeUtils;
 
 public class ClientSocketUtils {
 
-	public static final Logger logger = LoggerFactory.getLogger(ClientSocketUtils.class);
+	private static final Logger logger = LoggerFactory.getLogger(ClientSocketUtils.class);
 
 
 	private ClientSocketUtils() {

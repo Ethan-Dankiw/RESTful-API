@@ -18,7 +18,7 @@ import net.ethandankiw.socket.InputStreamUtils;
 import net.ethandankiw.socket.ServerSocketUtils;
 
 /**
- * Integration tests to verify bi-directional communication between a client socket and a server-side client socket.
+ * Integration tests to verify bidirectional communication between a client socket and a server-side client socket.
  * These tests check that: - The client can write to the server-side socket and the server can read it - The server-side
  * socket can write back to the client and the client can read it
  */

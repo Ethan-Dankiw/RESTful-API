@@ -11,7 +11,7 @@ import net.ethandankiw.socket.ServerSocketUtils;
 
 public class ApplicationServer {
 
-	public static final Logger logger = LoggerFactory.getLogger(ApplicationServer.class);
+	private static final Logger logger = LoggerFactory.getLogger(ApplicationServer.class);
 
 	// Define the port to create the server socket on
 	private static final Integer PORT = 8080;

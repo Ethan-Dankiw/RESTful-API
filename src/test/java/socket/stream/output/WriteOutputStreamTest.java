@@ -87,7 +87,7 @@ class WriteOutputStreamTest {
 
 			// Attempt to write to the stream and assert no exception is thrown
 			Assertions.assertDoesNotThrow(() -> {
-				// Perform the write using the utility under test
+				// Perform the server-side client write using the utility under test
 				int written = OutputStreamUtils.writeOutputStream(optStream.get(), TEST_STRING);
 
 				// Verify the number of bytes written equals the UTF-8 length of the string
@@ -141,7 +141,7 @@ class WriteOutputStreamTest {
 			boolean closed = ClientSocketUtils.closeConnection(optSocket.get());
 			Assertions.assertTrue(closed, "Server-side client socket should have closed but didn't");
 
-			// Notify the test that server finished accept (client may perform writing)
+			// Notify the test that server finished (client may perform writing)
 			latch.countDown();
 		});
 
